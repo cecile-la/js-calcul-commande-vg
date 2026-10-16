@@ -29,29 +29,27 @@ console.log("Le prix de la commande avant remise est : " + prixCommandeAvantRemi
 const remiseApplicable = nombrePersonnesCommandees >= (nombrePersonnesMinimum + PERSONNES_EN_PLUS_DU_MINIMUM_POUR_REMISE);
 console.log("La remise est applicable : " + remiseApplicable);
 
-
-// Lecture : montant de la remise = prix de la commande avant remise × taux de remise
 // Rappel : TAUX_REMISE est une fraction (x % = x / 100) : il se multiplie directement, sans diviser par 100
+// Lecture : montant de la remise = prix de la commande avant remise × taux de remise
 const montantRemise = prixCommandeAvantRemise * TAUX_REMISE;
 console.log("Le montant de la remise est : " + montantRemise + " euros.");
 
 const prixCommandeApresRemise = prixCommandeAvantRemise - montantRemise;
 console.log("Le prix de la commande après remise est : " + prixCommandeApresRemise + " euros.");
 
-// La règle de l’énoncé : livraison forfaitaire (fixe)+ prix par km hors bordeaux (fixe) par kilomètre hors Bordeaux (jeu de test)
+// Lecture : frais de livraison = forfait + prix par km hors Bordeaux × distance
 const fraisLivraisonCommande = FRAIS_LIVRAISON_FORFAITAIRES + PRIX_PAR_KM_HORS_BORDEAUX * distancePourLivraison;
 console.log("Les frais de livraison sont : " + fraisLivraisonCommande + " euros.");
 
-// La règle de l’énoncé : Le total, c’est ce que le client paie au final (avec deux résultats déjà calculés)
-// Résultat attendu : 210.08.
+// Lecture : total = prix après remise + frais de livraison
 const prixCommandeTotalAvecLivraison = prixCommandeApresRemise + fraisLivraisonCommande;
-console.log("Le prix final à payer livraison incluse est : " + prixCommandeTotalAvecLivraison + " euros.");
+console.log("Le prix final à payer, livraison incluse, est : " + prixCommandeTotalAvecLivraison + " euros.");
 
 // Test : une saisie de formulaire est une chaîne, même si elle contient un nombre
 const nombrePersonnesSaisie = "11";
 console.log("Saisie : " + nombrePersonnesSaisie);
 console.log("Saisie + 1 : " + (nombrePersonnesSaisie + 1));
-console.log("Saisie * 2 : " + nombrePersonnesSaisie * 2);
+console.log("Saisie * 2 : " + (nombrePersonnesSaisie * 2));
 console.log("typeof saisie : " + typeof nombrePersonnesSaisie);
 
 // Résumé de la commande en une phrase
