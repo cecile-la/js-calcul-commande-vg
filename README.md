@@ -10,3 +10,4 @@ Le projet suit le cours de JavaScript de ma formation, étape par étape. Notati
 |---|---|---|
 | B3M5 (JS) R1-4 | `console.log`, script relié avec `defer`, `const`, opérateurs arithmétiques et de comparaison, concaténation, piège de la saisie en chaîne | `etape-r1-4` |
 | B3M5 (JS) R5 | `if` et `let` avec valeur par défaut (remise), `if / else` (livraison, commande sous le minimum), `switch` avec `break` et `default` (régime du menu) | `etape-r5` |
+| B3M5 (JS) R6 | `for` avec compteur (grille de prix de 6 à 15 personnes), tableau et `for/of` (frais de livraison selon la distance), template literal (messages de la grille et des distances) | `etape-r6` |
