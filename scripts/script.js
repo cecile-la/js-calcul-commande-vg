@@ -85,6 +85,21 @@ if (commandePossible) {
     console.log("Commande impossible : " + nombrePersonnesCommandees + " personnes, le minimum de ce menu est de " + nombrePersonnesMinimum + " personnes.");
 }
 
+// Grille de prix selon le nombre de personnes
+const nombrePersonnesMaxGrille = 15;
+for (let nombrePersonnes = nombrePersonnesMinimum; nombrePersonnes <= nombrePersonnesMaxGrille; nombrePersonnes++) {
+    const prixGrille = prixParPersonne * nombrePersonnes;
+    console.log(`${nombrePersonnes} personnes : ${prixGrille} euros.`);
+}
+
+// Frais de livraison hors Bordeaux selon la distance
+// Jeu de test : distances inventées, en km
+const distancesVillesHorsBordeaux = [5, 12, 20, 30];
+for (const distanceVilleHorsBordeaux of distancesVillesHorsBordeaux) {
+    const fraisLivraisonVille = FRAIS_LIVRAISON_FORFAITAIRES + PRIX_PAR_KM_HORS_BORDEAUX * distanceVilleHorsBordeaux;
+    console.log(`${distanceVilleHorsBordeaux} km : ${fraisLivraisonVille} euros.`);
+}
+
 // Test : une saisie de formulaire est une chaîne, même si elle contient un nombre
 const nombrePersonnesSaisie = "11";
 console.log("Saisie : " + nombrePersonnesSaisie);
