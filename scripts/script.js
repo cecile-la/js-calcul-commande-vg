@@ -34,6 +34,44 @@ const PRIX_PAR_KM_HORS_BORDEAUX = 0.59;
 const TAUX_REMISE = 0.10;
 const PERSONNES_EN_PLUS_DU_MINIMUM_POUR_REMISE = 5;
 
+// Fonctions de calcul
+// À améliorer : ces fonctions utilisent prixParPersonne et nombrePersonnesMinimum, données du menu déclarées hors des fonctions (dépendances cachées) ; à passer en paramètres plus tard
+function calculerPrixAvantRemise(nombrePersonnes) {
+    const prixAvantRemise = prixParPersonne * nombrePersonnes;
+    return prixAvantRemise;
+}
+
+// Rappel : TAUX_REMISE est une fraction (x % = x / 100) : il se multiplie directement, sans diviser par 100
+// Lecture : montant de la remise = prix de la commande avant remise × taux de remise
+function calculerMontantRemise(prixAvantRemise, nombrePersonnes) {
+    if (nombrePersonnes >= (nombrePersonnesMinimum + PERSONNES_EN_PLUS_DU_MINIMUM_POUR_REMISE)) {
+        const montantRemise = prixAvantRemise * TAUX_REMISE;
+        return montantRemise;
+    }
+    return 0;
+}
+
+// Lecture : à Bordeaux = forfait ; Hors Bordeaux =  forfait + prix par km x distance ;
+function calculerFraisLivraison(aBordeaux, distance) {
+    if (aBordeaux) {
+        return FRAIS_LIVRAISON_FORFAITAIRES;
+    }
+    return FRAIS_LIVRAISON_FORFAITAIRES + PRIX_PAR_KM_HORS_BORDEAUX * distance;
+}
+
+// Résumé de la commande, ou message si elle est impossible
+function construireResumeCommande(nombrePersonnes, aBordeaux, distance) {
+    if (nombrePersonnes < nombrePersonnesMinimum) {
+        // sortie anticipée : commande impossible
+        return "Commande impossible : " + nombrePersonnes + " personnes, le minimum de ce menu est de " + nombrePersonnesMinimum + " personnes.";
+    }
+    const prixAvantRemise = calculerPrixAvantRemise(nombrePersonnes);
+    const montantRemise = calculerMontantRemise(prixAvantRemise, nombrePersonnes);
+    const fraisLivraison = calculerFraisLivraison(aBordeaux, distance);
+    const prixTotal = prixAvantRemise - montantRemise + fraisLivraison;
+    return "Commande de " + nombrePersonnes + " personnes : " + prixAvantRemise + " euros avant remise, " + montantRemise + " euros de remise, " + fraisLivraison + " euros de livraison, total " + prixTotal + " euros.";
+}
+
 // Calculs de la commande
 // Règle de l'énoncé : commande impossible sous le nombre minimum de personnes du menu
 const commandePossible = nombrePersonnesCommandees >= nombrePersonnesMinimum;
@@ -42,7 +80,7 @@ console.log("Est-ce que la commande est possible ? " + commandePossible);
 const prixParPersonne = prixPourPersonnesMinimum / nombrePersonnesMinimum;
 console.log("Le prix par personne est : " + prixParPersonne + " euros.");
 
-const prixCommandeAvantRemise = prixParPersonne * nombrePersonnesCommandees;
+const prixCommandeAvantRemise = calculerPrixAvantRemise(nombrePersonnesCommandees);
 console.log("Le prix de la commande avant remise est : " + prixCommandeAvantRemise + " euros.");
 
 // Règle de l'énoncé : remise si la commande compte au moins N personnes de plus que le minimum du menu
@@ -50,40 +88,21 @@ console.log("Le prix de la commande avant remise est : " + prixCommandeAvantRemi
 const remiseApplicable = nombrePersonnesCommandees >= (nombrePersonnesMinimum + PERSONNES_EN_PLUS_DU_MINIMUM_POUR_REMISE);
 console.log("La remise est applicable : " + remiseApplicable);
 
-// Rappel : TAUX_REMISE est une fraction (x % = x / 100) : il se multiplie directement, sans diviser par 100
-// Lecture : montant de la remise = prix de la commande avant remise × taux de remise
-// La remise ne s'applique que si remiseApplicable est vrai
-let montantRemise = 0;
-
-if (remiseApplicable) {
-    montantRemise = prixCommandeAvantRemise * TAUX_REMISE;
-}
+const montantRemise = calculerMontantRemise(prixCommandeAvantRemise, nombrePersonnesCommandees);
 console.log("Le montant de la remise est : " + montantRemise + " euros.");
 
 const prixCommandeApresRemise = prixCommandeAvantRemise - montantRemise;
 console.log("Le prix de la commande après remise est : " + prixCommandeApresRemise + " euros.");
 
-// Lecture : à Bordeaux = forfait ; hors Bordeaux = forfait + prix par km × distance
-let fraisLivraisonCommande;
-
-if (livraisonABordeaux) {
-    fraisLivraisonCommande = FRAIS_LIVRAISON_FORFAITAIRES;
-} else {
-    fraisLivraisonCommande = FRAIS_LIVRAISON_FORFAITAIRES + PRIX_PAR_KM_HORS_BORDEAUX * distancePourLivraison;
-}
+const fraisLivraisonCommande = calculerFraisLivraison(livraisonABordeaux, distancePourLivraison);
 console.log("Les frais de livraison sont : " + fraisLivraisonCommande + " euros.");
 
 // Lecture : total = prix après remise + frais de livraison
 const prixCommandeTotalAvecLivraison = prixCommandeApresRemise + fraisLivraisonCommande;
 console.log("Le prix final à payer, livraison incluse, est : " + prixCommandeTotalAvecLivraison + " euros.");
 
-// Résumé de la commande, ou message si elle est impossible
-if (commandePossible) {
-    const resumeCommande = "Commande de " + nombrePersonnesCommandees + " personnes : " + prixCommandeAvantRemise + " euros avant remise, " + montantRemise + " euros de remise, " + fraisLivraisonCommande + " euros de livraison, total " + prixCommandeTotalAvecLivraison + " euros.";
-    console.log(resumeCommande);
-} else {
-    console.log("Commande impossible : " + nombrePersonnesCommandees + " personnes, le minimum de ce menu est de " + nombrePersonnesMinimum + " personnes.");
-}
+// Résumé de la commande
+console.log(construireResumeCommande(nombrePersonnesCommandees, livraisonABordeaux, distancePourLivraison));
 
 // Grille de prix selon le nombre de personnes
 const nombrePersonnesMaxGrille = 15;
