@@ -69,7 +69,7 @@ function construireResumeCommande(nombrePersonnes, aBordeaux, distance) {
     const montantRemise = calculerMontantRemise(prixAvantRemise, nombrePersonnes);
     const fraisLivraison = calculerFraisLivraison(aBordeaux, distance);
     const prixTotal = prixAvantRemise - montantRemise + fraisLivraison;
-    return "Commande de " + nombrePersonnes + " personnes : " + prixAvantRemise + " euros avant remise, " + montantRemise + " euros de remise, " + fraisLivraison + " euros de livraison, total " + prixTotal + " euros.";
+    return "Commande de " + nombrePersonnes + " personnes : " + prixAvantRemise.toFixed(2) + " euros avant remise, " + montantRemise.toFixed(2) + " euros de remise, " + fraisLivraison.toFixed(2) + " euros de livraison, total " + prixTotal.toFixed(2) + " euros.";
 }
 
 // Calculs de la commande
@@ -108,7 +108,7 @@ console.log(construireResumeCommande(nombrePersonnesCommandees, livraisonABordea
 const nombrePersonnesMaxGrille = 15;
 for (let nombrePersonnes = nombrePersonnesMinimum; nombrePersonnes <= nombrePersonnesMaxGrille; nombrePersonnes++) {
     const prixGrille = prixParPersonne * nombrePersonnes;
-    console.log(`${nombrePersonnes} personnes : ${prixGrille} euros.`);
+    console.log(`${nombrePersonnes} personnes : ${prixGrille.toFixed(2)} euros.`);
 }
 
 // Frais de livraison hors Bordeaux selon la distance
@@ -116,7 +116,7 @@ for (let nombrePersonnes = nombrePersonnesMinimum; nombrePersonnes <= nombrePers
 const distancesVillesHorsBordeaux = [5, 12, 20, 30];
 for (const distanceVilleHorsBordeaux of distancesVillesHorsBordeaux) {
     const fraisLivraisonVille = FRAIS_LIVRAISON_FORFAITAIRES + PRIX_PAR_KM_HORS_BORDEAUX * distanceVilleHorsBordeaux;
-    console.log(`${distanceVilleHorsBordeaux} km : ${fraisLivraisonVille} euros.`);
+    console.log(`${distanceVilleHorsBordeaux} km : ${fraisLivraisonVille.toFixed(2)} euros.`);
 }
 
 // Test : une saisie de formulaire est une chaîne, même si elle contient un nombre
@@ -125,3 +125,14 @@ console.log("Saisie : " + nombrePersonnesSaisie);
 console.log("Saisie + 1 : " + (nombrePersonnesSaisie + 1));
 console.log("Saisie * 2 : " + (nombrePersonnesSaisie * 2));
 console.log("typeof saisie : " + typeof nombrePersonnesSaisie);
+
+// Conversion de la saisie en nombre, avant de calculer
+const nombrePersonnesSaisieConvertie = Number(nombrePersonnesSaisie);
+console.log("Saisie convertie + 1 : " + (nombrePersonnesSaisieConvertie + 1));
+console.log("typeof saisie convertie : " + typeof nombrePersonnesSaisieConvertie);
+
+if (Number.isNaN(nombrePersonnesSaisieConvertie)) {
+    console.log(`Saisie invalide : ${nombrePersonnesSaisie}. Entrez un nombre de personnes en chiffres.`);
+} else {
+    console.log(`Saisie valide : ${nombrePersonnesSaisieConvertie} personnes.`);
+}
