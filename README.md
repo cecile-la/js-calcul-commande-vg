@@ -13,3 +13,5 @@ Le projet suit le cours de JavaScript de ma formation, étape par étape. Notati
 | B3M5 (JS) R6 | `for` avec compteur (grille de prix de 6 à 15 personnes), tableau et `for/of` (frais de livraison selon la distance), template literal (messages de la grille et des distances) | `etape-r6` |
 | B3M5 (JS) R7 | Fonctions avec paramètres et `return` (prix avant remise, remise, livraison), paramètres et arguments, sortie anticipée avec `return` (commande impossible), fonction qui appelle d'autres fonctions (résumé de la commande) | `etape-r7` |
 | B3M5 (JS) R8-9 | `Number()` (convertir la saisie en nombre), `typeof` (vérifier le type), `NaN` et `Number.isNaN()` (détecter une saisie invalide), `toFixed(2)` (arrondir les montants affichés au client) | `etape-r8-9` |
+| B3M5 (JS) R11 | objet littéral `{ }` (regrouper les données de la commande), propriétés et notation point `commande.distance` (lire une valeur), objet en paramètre (la fonction du résumé reçoit une commande au lieu de trois valeurs) | `etape-r11`
+
