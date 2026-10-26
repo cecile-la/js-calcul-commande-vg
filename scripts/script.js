@@ -24,9 +24,17 @@ switch (regimeMenu) {
 
 // Jeu de test de la commande : valeurs inventées, distance mesurée en km
 const nombrePersonnesCommandees = 11;
-const distancePourLivraison = 12;
 const livraisonABordeaux = false;
+const distancePourLivraison = 12;
 console.log("Le nombre de personnes commandées pour ce menu est : " + nombrePersonnesCommandees + ", la distance de livraison est : " + distancePourLivraison + " km, la livraison est-elle à Bordeaux : " + livraisonABordeaux + ".");
+
+// Données de la commande regroupées dans un objet
+const commande = {
+    nombrePersonnes: 11,
+    aBordeaux: false,
+    distance: 12
+};
+console.log(`Commande : ${commande.nombrePersonnes} personnes, livraison à Bordeaux : ${commande.aBordeaux}, distance : ${commande.distance} km.`);
 
 // Règles imposées par l'énoncé "Vite & Gourmand", prix en euros, taux en fraction
 const FRAIS_LIVRAISON_FORFAITAIRES = 5;
@@ -60,16 +68,16 @@ function calculerFraisLivraison(aBordeaux, distance) {
 }
 
 // Résumé de la commande, ou message si elle est impossible
-function construireResumeCommande(nombrePersonnes, aBordeaux, distance) {
-    if (nombrePersonnes < nombrePersonnesMinimum) {
+function construireResumeCommande(uneCommande) {
+    if (uneCommande.nombrePersonnes < nombrePersonnesMinimum) {
         // sortie anticipée : commande impossible
-        return "Commande impossible : " + nombrePersonnes + " personnes, le minimum de ce menu est de " + nombrePersonnesMinimum + " personnes.";
+        return "Commande impossible : " + uneCommande.nombrePersonnes + " personnes, le minimum de ce menu est de " + nombrePersonnesMinimum + " personnes.";
     }
-    const prixAvantRemise = calculerPrixAvantRemise(nombrePersonnes);
-    const montantRemise = calculerMontantRemise(prixAvantRemise, nombrePersonnes);
-    const fraisLivraison = calculerFraisLivraison(aBordeaux, distance);
+    const prixAvantRemise = calculerPrixAvantRemise(uneCommande.nombrePersonnes);
+    const montantRemise = calculerMontantRemise(prixAvantRemise, uneCommande.nombrePersonnes);
+    const fraisLivraison = calculerFraisLivraison(uneCommande.aBordeaux, uneCommande.distance);
     const prixTotal = prixAvantRemise - montantRemise + fraisLivraison;
-    return "Commande de " + nombrePersonnes + " personnes : " + prixAvantRemise.toFixed(2) + " euros avant remise, " + montantRemise.toFixed(2) + " euros de remise, " + fraisLivraison.toFixed(2) + " euros de livraison, total " + prixTotal.toFixed(2) + " euros.";
+    return "Commande de " + uneCommande.nombrePersonnes + " personnes : " + prixAvantRemise.toFixed(2) + " euros avant remise, " + montantRemise.toFixed(2) + " euros de remise, " + fraisLivraison.toFixed(2) + " euros de livraison, total " + prixTotal.toFixed(2) + " euros.";
 }
 
 // Calculs de la commande
@@ -102,7 +110,7 @@ const prixCommandeTotalAvecLivraison = prixCommandeApresRemise + fraisLivraisonC
 console.log("Le prix final à payer, livraison incluse, est : " + prixCommandeTotalAvecLivraison + " euros.");
 
 // Résumé de la commande
-console.log(construireResumeCommande(nombrePersonnesCommandees, livraisonABordeaux, distancePourLivraison));
+console.log(construireResumeCommande(commande));
 
 // Grille de prix selon le nombre de personnes
 const nombrePersonnesMaxGrille = 15;
