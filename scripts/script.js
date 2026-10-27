@@ -28,19 +28,32 @@ const livraisonABordeaux = false;
 const distancePourLivraison = 12;
 console.log("Le nombre de personnes commandées pour ce menu est : " + nombrePersonnesCommandees + ", la distance de livraison est : " + distancePourLivraison + " km, la livraison est-elle à Bordeaux : " + livraisonABordeaux + ".");
 
-// Données de la commande regroupées dans un objet
-const commande = {
-    nombrePersonnes: 11,
-    aBordeaux: false,
-    distance: 12
-};
-console.log(`Commande : ${commande.nombrePersonnes} personnes, livraison à Bordeaux : ${commande.aBordeaux}, distance : ${commande.distance} km.`);
-
 // Règles imposées par l'énoncé "Vite & Gourmand", prix en euros, taux en fraction
 const FRAIS_LIVRAISON_FORFAITAIRES = 5;
 const PRIX_PAR_KM_HORS_BORDEAUX = 0.59;
 const TAUX_REMISE = 0.10;
 const PERSONNES_EN_PLUS_DU_MINIMUM_POUR_REMISE = 5;
+
+
+// Modèle d'une commande
+class Commande {
+    constructor(nombrePersonnes, aBordeaux, distance) {
+        this.nombrePersonnes = nombrePersonnes;
+        this.aBordeaux = aBordeaux;
+        this.distance = distance;
+    }
+
+    calculerTotal() {
+        const prixAvantRemise = calculerPrixAvantRemise(this.nombrePersonnes);
+        const montantRemise = calculerMontantRemise(prixAvantRemise, this.nombrePersonnes);
+        const fraisLivraison = calculerFraisLivraison(this.aBordeaux, this.distance);
+        return prixAvantRemise - montantRemise + fraisLivraison;
+    }
+}
+
+// Données de la commande regroupées dans un objet
+const commande = new Commande(nombrePersonnesCommandees, livraisonABordeaux, distancePourLivraison);
+console.log(`Commande : ${commande.nombrePersonnes} personnes, livraison à Bordeaux : ${commande.aBordeaux}, distance : ${commande.distance} km.`);
 
 // Fonctions de calcul
 // À améliorer : ces fonctions utilisent prixParPersonne et nombrePersonnesMinimum, données du menu déclarées hors des fonctions (dépendances cachées) ; à passer en paramètres plus tard
@@ -111,6 +124,7 @@ console.log("Le prix final à payer, livraison incluse, est : " + prixCommandeTo
 
 // Résumé de la commande
 console.log(construireResumeCommande(commande));
+console.log(commande.calculerTotal());
 
 // Grille de prix selon le nombre de personnes
 const nombrePersonnesMaxGrille = 15;
