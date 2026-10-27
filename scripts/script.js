@@ -7,21 +7,6 @@ const nombrePersonnesMinimum = 6;
 const regimeMenu = "classique";
 console.log("Le prix du menu (minimum de personnes imposé) est : " + prixPourPersonnesMinimum + " euros, le nombre de personnes minimum pour commander ce menu est : " + nombrePersonnesMinimum + ", le régime du menu est : " + regimeMenu + ".");
 
-// Régime du menu
-switch (regimeMenu) {
-    case "classique":
-        console.log("Menu classique : viande ou poisson.");
-        break;
-    case "vegan":
-        console.log("Menu vegan : sans aucun produit d’origine animale.");
-        break;
-    case "vegetarien":
-        console.log("Menu végétarien : sans viande ni poisson.");
-        break;
-    default:
-        console.log("Régime inconnu : " + regimeMenu + ". Valeurs attendues : classique, vegetarien, vegan.");
-}
-
 // Jeu de test de la commande : valeurs inventées, distance mesurée en km
 const nombrePersonnesCommandees = 11;
 const livraisonABordeaux = false;
@@ -34,6 +19,8 @@ const PRIX_PAR_KM_HORS_BORDEAUX = 0.59;
 const TAUX_REMISE = 0.10;
 const PERSONNES_EN_PLUS_DU_MINIMUM_POUR_REMISE = 5;
 
+// Valeur calculée du menu : prix pour une personne
+const prixParPersonne = prixPourPersonnesMinimum / nombrePersonnesMinimum;
 
 // Modèle d'une commande
 class Commande {
@@ -51,12 +38,8 @@ class Commande {
     }
 }
 
-// Données de la commande regroupées dans un objet
-const commande = new Commande(nombrePersonnesCommandees, livraisonABordeaux, distancePourLivraison);
-console.log(`Commande : ${commande.nombrePersonnes} personnes, livraison à Bordeaux : ${commande.aBordeaux}, distance : ${commande.distance} km.`);
-
 // Fonctions de calcul
-// À améliorer : ces fonctions utilisent prixParPersonne et nombrePersonnesMinimum, données du menu déclarées hors des fonctions (dépendances cachées) ; à passer en paramètres plus tard
+// À améliorer : ces fonctions (et la méthode calculerTotal, qui les appelle) utilisent prixParPersonne et nombrePersonnesMinimum, données du menu déclarées hors des fonctions (dépendances cachées) ; à passer en paramètres plus tard
 function calculerPrixAvantRemise(nombrePersonnes) {
     const prixAvantRemise = prixParPersonne * nombrePersonnes;
     return prixAvantRemise;
@@ -72,7 +55,7 @@ function calculerMontantRemise(prixAvantRemise, nombrePersonnes) {
     return 0;
 }
 
-// Lecture : à Bordeaux = forfait ; Hors Bordeaux =  forfait + prix par km x distance ;
+// Lecture : à Bordeaux = forfait ; hors Bordeaux = forfait + prix par km × distance
 function calculerFraisLivraison(aBordeaux, distance) {
     if (aBordeaux) {
         return FRAIS_LIVRAISON_FORFAITAIRES;
@@ -93,12 +76,30 @@ function construireResumeCommande(uneCommande) {
     return "Commande de " + uneCommande.nombrePersonnes + " personnes : " + prixAvantRemise.toFixed(2) + " euros avant remise, " + montantRemise.toFixed(2) + " euros de remise, " + fraisLivraison.toFixed(2) + " euros de livraison, total " + prixTotal.toFixed(2) + " euros.";
 }
 
-// Calculs de la commande
+// Régime du menu
+switch (regimeMenu) {
+    case "classique":
+        console.log("Menu classique : viande ou poisson.");
+        break;
+    case "vegan":
+        console.log("Menu vegan : sans aucun produit d’origine animale.");
+        break;
+    case "vegetarien":
+        console.log("Menu végétarien : sans viande ni poisson.");
+        break;
+    default:
+        console.log("Régime inconnu : " + regimeMenu + ". Valeurs attendues : classique, vegetarien, vegan.");
+}
+
+// Commande de test, fabriquée avec la classe à partir des données de la commande
+const commande = new Commande(nombrePersonnesCommandees, livraisonABordeaux, distancePourLivraison);
+console.log(`Commande : ${commande.nombrePersonnes} personnes, livraison à Bordeaux : ${commande.aBordeaux}, distance : ${commande.distance} km.`);
+
+// Calculs de contrôle de la commande (le résumé refait le calcul complet)
 // Règle de l'énoncé : commande impossible sous le nombre minimum de personnes du menu
 const commandePossible = nombrePersonnesCommandees >= nombrePersonnesMinimum;
 console.log("Est-ce que la commande est possible ? " + commandePossible);
 
-const prixParPersonne = prixPourPersonnesMinimum / nombrePersonnesMinimum;
 console.log("Le prix par personne est : " + prixParPersonne + " euros.");
 
 const prixCommandeAvantRemise = calculerPrixAvantRemise(nombrePersonnesCommandees);
@@ -122,9 +123,9 @@ console.log("Les frais de livraison sont : " + fraisLivraisonCommande + " euros.
 const prixCommandeTotalAvecLivraison = prixCommandeApresRemise + fraisLivraisonCommande;
 console.log("Le prix final à payer, livraison incluse, est : " + prixCommandeTotalAvecLivraison + " euros.");
 
-// Résumé de la commande
+// Résumé de la commande, puis total calculé par la méthode
 console.log(construireResumeCommande(commande));
-console.log(commande.calculerTotal());
+console.log("Total calculé par la méthode : " + commande.calculerTotal() + " euros.");
 
 // Grille de prix selon le nombre de personnes
 const nombrePersonnesMaxGrille = 15;
