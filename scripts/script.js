@@ -127,6 +127,19 @@ console.log("Le prix final à payer, livraison incluse, est : " + prixCommandeTo
 console.log(construireResumeCommande(commande));
 console.log("Total calculé par la méthode : " + commande.calculerTotal() + " euros.");
 
+// Date de la commande : la date du jour
+const dateCommande = new Date();
+console.log(`Commande passée le : ${dateCommande.toLocaleDateString("fr-FR")}.`);
+
+// Jeu de test : date de livraison inventée
+const dateLivraison = new Date(2026, 11, 24);
+console.log(`Livraison prévue le : ${dateLivraison.toLocaleDateString("fr-FR")}.`);
+
+// Jours avant la livraison : écart en millisecondes, converti en jours, arrondi au-dessus
+const millisecondesParJour = 1000 * 60 * 60 * 24;
+const joursAvantLivraison = Math.ceil((dateLivraison - dateCommande) / millisecondesParJour);
+console.log(`Livraison dans ${joursAvantLivraison} jours.`);
+
 // Grille de prix selon le nombre de personnes
 const nombrePersonnesMaxGrille = 15;
 for (let nombrePersonnes = nombrePersonnesMinimum; nombrePersonnes <= nombrePersonnesMaxGrille; nombrePersonnes++) {
